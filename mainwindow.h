@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QSettings>
 #include <QTextCharFormat>
 
 QT_BEGIN_NAMESPACE
@@ -46,9 +47,16 @@ private slots:
 
     void on_action_Color_triggered();
 
+    void on_actionFusion_triggered();
+
+    void on_actionWindows_triggered();
+
+    void readSettings();
+    void writeSettings();
 private:
     Ui::MainWindow *ui;
     QString fileName;
+    QSettings settings;
 
     bool maybeSave();
     void loadFile(const QString &fileName);
@@ -61,5 +69,6 @@ private:
     void textFamily(const QString &f);
     void textSize(const QString &p);
     void textStyle(int styleIndex);
+    int app_Counter;
 };
 #endif // MAINWINDOW_H

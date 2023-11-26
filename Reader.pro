@@ -26,4 +26,8 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 RESOURCES += \
-    Reader.qrc
+    Reader.qrc \
+    styles.qrc
+
+DISTFILES += \
+    mystyle.css

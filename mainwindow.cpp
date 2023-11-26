@@ -21,6 +21,7 @@
 #include <QPrintDialog>
 #include <QPrinter>
 #include <QPrintPreviewDialog>
+#include <QRegExp>
 #endif
 
 #include <QComboBox>
@@ -28,9 +29,15 @@
 
 #include<QDebug>
 
+#include <QStyleFactory>
+#include <QSettings>
+
+
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
+    , settings(QSettings::NativeFormat, QSettings::SystemScope, "KhAI", "QReader")
 {
     ui->setupUi(this);
     setCurrentFileName(QString());
@@ -76,6 +83,16 @@ MainWindow::MainWindow(QWidget *parent)
     connect(comboSize, SIGNAL(activated(QString)), this, SLOT(textSize(QString)));
 
     comboSize->setCurrentIndex(comboSize->findText(QString::number(QApplication::font().pointSize())));
+
+    auto combo_App_Style = new QComboBox;
+    combo_App_Style->addItems(QStyleFactory::keys());
+    ui->toolBar->addWidget(combo_App_Style);
+    connect(combo_App_Style,SIGNAL(activated(const QString&)),SLOT(slotChangeStyle(const QString&)));
+
+    QString defaultStyle = QApplication::style()->metaObject()->className();
+    QRegExp regExp(".(.*)\\+?Style");
+    if (regExp.exactMatch(defaultStyle)) defaultStyle = regExp.cap(1);
+    combo_App_Style->setCurrentIndex(combo_App_Style->findText(defaultStyle, Qt::MatchContains));
 }
 
 MainWindow::~MainWindow()
@@ -378,34 +395,34 @@ void MainWindow::textStyle(int styleIndex)
     }
 }
 
-//void filePrint()
-//{
-//    #ifndef QT_NO_PRINTER
-//        QPrinter printer(QPrinter::HighResolution);
-//        QPrintDialog *dlg = new QPrintDialog(&printer, this);
-//        if (textEdit->textCursor().hasSelection())
-//            dlg->addEnabledOption(QAbstractPrintDialog::PrintSelection);
-//        dlg->setWindowTitle(tr("Print Document"));
-//        if (dlg->exec() == QDialog::Accepted) textEdit->print(&printer);
-//        delete dlg;
-//    #endif
-//}
+void MainWindow::on_actionFusion_triggered()
+{
+    QApplication::setStyle(QStyleFactory::create("Fusion"));
+}
 
-//void filePrintPreview()
-//{
-//    #ifndef QT_NO_PRINTER
-//        QPrinter printer(QPrinter::HighResolution);
-//        QPrintPreviewDialog preview(&printer, this);
-//        connect(&preview, SIGNAL(paintRequested(QPrinter*)), SLOT(printPreview(QPrinter*)));
-//        preview.exec();
-//    #endif
-//}
 
-//void printPreview(QPrinter *printer)
-//{
-//    #ifdef QT_NO_PRINTER
-//        Q_UNUSED(printer);
-//    #else
-//        textEdit->print(printer);
-//    #endif
-//}
+void MainWindow::on_actionWindows_triggered()
+{
+    QApplication::setStyle(QStyleFactory::create("Windows"));
+}
+
+void MainWindow::readSettings()
+{
+    settings.beginGroup("/Settings");
+    int app_Width = settings.value("/width", width()).toInt(); // Ширина
+    int app_Height = settings.value("/height", height()).toInt(); // Высота
+    app_Counter = settings.value("/counter", 1).toInt(); // Кол-во запусков
+    QString str = tr("This program has been started ") +
+    QString().setNum(app_Counter++) + tr(" times");
+    statusBar()->showMessage(str, 3000);
+    this->resize(app_Width, app_Height);
+    settings.endGroup();
+}
+void MainWindow::writeSettings()
+{
+    settings.beginGroup("/Settings");
+    settings.setValue("/counter", app_Counter);
+    settings.setValue("/width", width());
+    settings.setValue("/height", height());
+    settings.endGroup();
+}
