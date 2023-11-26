@@ -84,7 +84,16 @@
      <addaction name="actionWindows"/>
      <addaction name="actionFusion"/>
     </widget>
+    <widget class="QMenu" name="menu_6">
+     <property name="title">
+      <string>Языки</string>
+     </property>
+     <addaction name="action_3"/>
+     <addaction name="action_6"/>
+     <addaction name="action_7"/>
+    </widget>
     <addaction name="menu_5"/>
+    <addaction name="menu_6"/>
    </widget>
    <addaction name="menu"/>
    <addaction name="menu_2"/>
@@ -395,6 +404,21 @@
   <action name="actionFusion">
    <property name="text">
     <string>Fusion</string>
+   </property>
+  </action>
+  <action name="action_3">
+   <property name="text">
+    <string>Русский</string>
+   </property>
+  </action>
+  <action name="action_6">
+   <property name="text">
+    <string>Английский</string>
+   </property>
+  </action>
+  <action name="action_7">
+   <property name="text">
+    <string>Немецкий</string>
    </property>
   </action>
  </widget>

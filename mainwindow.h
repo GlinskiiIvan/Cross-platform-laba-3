@@ -53,6 +53,10 @@ private slots:
 
     void readSettings();
     void writeSettings();
+    void on_action_6_triggered();
+
+    void on_action_3_triggered();
+
 private:
     Ui::MainWindow *ui;
     QString fileName;

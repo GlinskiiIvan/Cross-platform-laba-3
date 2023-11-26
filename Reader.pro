@@ -26,8 +26,14 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 RESOURCES += \
+    Languages.qrc \
     Reader.qrc \
     styles.qrc
 
 DISTFILES += \
     mystyle.css
+
+TRANSLATIONS = QReader_de.ts \
+               QReader_fr.ts \
+               QReader_en.ts \
+               QReader_ru.ts

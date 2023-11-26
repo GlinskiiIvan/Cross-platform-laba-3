@@ -32,6 +32,8 @@
 #include <QStyleFactory>
 #include <QSettings>
 
+#include <QTranslator>
+
 
 
 MainWindow::MainWindow(QWidget *parent)
@@ -426,3 +428,20 @@ void MainWindow::writeSettings()
     settings.setValue("/height", height());
     settings.endGroup();
 }
+
+void MainWindow::on_action_6_triggered()
+{
+    QTranslator translator;
+    translator.load(":/QReader_en.qm");
+    qApp->installTranslator(&translator);
+    ui->retranslateUi(this);
+}
+
+
+void MainWindow::on_action_3_triggered()
+{
+    QTranslator translator;
+    QCoreApplication::removeTranslator(&translator);
+    ui->retranslateUi(this);
+}
+
